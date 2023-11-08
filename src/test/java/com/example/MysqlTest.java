@@ -19,41 +19,41 @@ public class MysqlTest {
 //	@Test
 //	public void insert() {
 //		PostVO vo=new PostVO();
-//		vo.setTitle("¾È³çÇÏ¼¼¿ä!");
-//		vo.setWriter("blue");
+//		vo.setTitle("ì•ˆë…•í•˜ì„¸ìš”!");
+//		vo.setWriter("sky");
 //		pdao.insert(vo);
 //	}
-	
+//	
 //	@Test
-//	public void upddate() {
+//	public void update() {
 //		PostVO vo=new PostVO();
-//		vo.setTitle("¾È³çÇÏ¼¼¿ä! ±èÃ¢¿íÀÔ´Ï´Ù.");
-//		vo.setBody("¼öÁ¤ÇÕ´Ï´Ù.");
+//		vo.setTitle("í™˜ì˜í•©ë‹ˆë‹¤ ê¹€ì°½ìš±ì…ë‹ˆë‹¤.");
+//		vo.setBody("ë‚´ìš©ì„ ìˆ˜ì •í•©ë‹ˆë‹¤.");
 //		vo.setPid(1);
 //		pdao.update(vo);
 //	}
-	
-
-	
-	@Test
-	public void read() {
-		pdao.read(1);
-	}
-	
+//	
+//
+//	
+//	@Test
+//	public void read() {
+//		pdao.read(1);
+//	}
+//	
 //	@Test
 //	public void delete() {
-//		pdao.delete(3);
+//		pdao.delete(4);
+//	}
+//	
+//	@Test
+//	public void list() {
+//		pdao.HashMap();
 //	}
 	
-	@Test
-	public void list() {
-		pdao.list();
-	}
-	
-	@Test
-	public void now() {
-		System.out.println("ÇöÀç:" + dao.now());
-	}
+//	@Test
+//	public void now() {
+//		System.out.println("í˜„ì¬ì‹œê°„:" + dao.now());
+//	}
 	
 	
 }
