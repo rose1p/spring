@@ -18,6 +18,6 @@ class Web01ApplicationTests {
 	
 	@Test
 	void now() {
-		System.out.println("ÇöÀç½Ã°£:" + dao.now());
+		System.out.println("í˜„ìž¬ë‚ ì§œ:" + dao.now());
 	}
 }

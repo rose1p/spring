@@ -21,18 +21,13 @@ public class PostDAOImpl implements PostDAO{
 	}
 
 	@Override
-	public void insert(PostVO vo) {
-		session.insert(namespace + ".insert", vo);
-	}
-
-	@Override
-	public void update(PostVO vo) {
-		session.update(namespace + ".update", vo);
-	}
-
-	@Override
 	public HashMap<String, Object> read(int pid) {
 		return session.selectOne(namespace + ".read", pid);
+	}
+
+	@Override
+	public void insert(PostVO vo) {
+		session.insert(namespace + ".insert", vo);
 	}
 
 	@Override
@@ -41,9 +36,7 @@ public class PostDAOImpl implements PostDAO{
 	}
 
 	@Override
-	public void HashMap() {
-		// TODO Auto-generated method stub
-		
+	public void update(PostVO vo) {
+		session.update(namespace + ".update", vo);
 	}
-
 }
