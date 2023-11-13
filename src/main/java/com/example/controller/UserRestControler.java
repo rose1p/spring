@@ -20,10 +20,20 @@ import com.example.domain.UserVO;
 public class UserRestControler {
 	@Autowired
 	UserDAO dao;
+	
+	@PostMapping("/insert")
+	public void insert(@RequestBody UserVO vo) {
+		//System.out.println(vo.toString());
+		dao.insert(vo);
+	}
 
-	// 사진 업로드 컨트롤러
-	@PostMapping("/photo")
-	public void photo(String uid, MultipartHttpServletRequest multi) throws Exception {
+	@PostMapping("/password")
+	public void password(@RequestBody UserVO vo) {
+		dao.password(vo);
+	}
+
+	@PostMapping("/upload")
+	public void upload(String uid, MultipartHttpServletRequest multi) throws Exception {
 		MultipartFile file = multi.getFile("file");
 		String filePath = "/upload/photo/";
 		String fileName = System.currentTimeMillis() + ".jpg";
@@ -31,12 +41,7 @@ public class UserRestControler {
 		UserVO vo = new UserVO();
 		vo.setUid(uid);
 		vo.setPhoto(filePath + fileName);
-		dao.updatePhoto(vo);
-	}
-
-	@PostMapping("/password")
-	public void password(@RequestBody UserVO vo) {
-		dao.updatePassword(vo);
+		dao.photo(vo);
 	}
 
 	@PostMapping("/update")
@@ -48,11 +53,6 @@ public class UserRestControler {
 	@GetMapping("/read") // localhost:8080/users/read?uid=blue
 	public HashMap<String, Object> read(String uid) {
 		return dao.read(uid);
-	}
-	
-	@PostMapping("/insert")
-	public void insert(@RequestBody UserVO vo) {
-		dao.insert(vo);
 	}
 
 	@PostMapping("/login")

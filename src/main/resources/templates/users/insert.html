@@ -1,8 +1,8 @@
 <div class="my-5">
 	<h1 class="text-center mb-5">회원가입</h1>
-	<div class="col-lg-6">
-		<div class="mb-3">
-			<form name="frm">
+	<div class="row justify-content-center">
+		<div class="col-md-8">
+			<form name="frm" class="card p-3">
 				<div class="input-group mb-2">
 					<span class="input-group-text">아이디</span>
 					<input name="uid" class="form-control">
@@ -22,21 +22,20 @@
 				</div>
 				<div class="input-group mb-2">
 					<span class="input-group-text">주소</span>
-					<input name="address1" class="form-control">
-					<dutton id="btn-search" class="btn btn-primary" type="button">검색</button>
+					<input name="address1" class="form-control" readonly>
+					<button id="btn-search" class="btn btn-primary" type="button">검색</button>
 				</div>
-				<div><input name="address2" class="form-control"></div>
-				<div class="text-center mt-3">
-					<button class="btn btn-primary">가입</button>
-					<dutton class="btn btn-secondary" type="reset">취소</button>
+				<input name="address2" class="form-control" placeholder="상세주소">
+				<div class="text-center my-3">
+					<button class="btn btn-primary" type="submit">등록</button>
+					<button class="btn btn-secondary" type="reset">취소</button>
 				</div>
-				<form>
+			</form>
 		</div>
 	</div>
 </div>
 <script>
-	let check = false;
-
+	let checked = false;
 	$(frm).on("submit", function (e) {
 		e.preventDefault();
 		const uid = $(frm.uid).val();
@@ -46,23 +45,26 @@
 		const address1 = $(frm.address1).val();
 		const address2 = $(frm.address2).val();
 		if (uid == "" || upass == "" || uname == "") {
-			alert("아이디, 비밀번호, 이름을 입력해 주세요");
-		} else if (check == false) {
-			alert("아이디 중복체크를 하세요")
-		} else {
-			if (confirm("회원등록을 하시겠습니까?")) {
-				//회원등록
-				$.ajax({
-					type: "post",
-					url: "/users/insert",
-					data: JSON.stringify({uid, upass, phone, address1, address2, uname}),
-					contentType: "application/JSON",
-					success: function () {
-						alert("회원가입이 완료되었습니다.");
-						location.href = "/users/login";
-					}
-				})
-			}
+			alert("아이디, 비밀번호, 이름을 꼭 입력하세요!");
+			return;
+		}
+		//중복체크
+		if (!checked) {
+			alert("아이디 중복채크를 확인헤 주시기 바랍니다.");
+			return;
+		}
+		if (confirm("회원가입을 하시겠습니까?")) {
+			//회원가입
+			$.ajax({
+				type: "post",
+				url: "/users/insert",
+				data: JSON.stringify({uid, upass, phone, address1, address2, uname}),
+				contentType: "application/JSON",
+				success: function () {
+					alert("회원가입이 완료되었습니다.");
+					location.href = "/users/login";
+				}
+			})
 		}
 	});
 
@@ -72,30 +74,29 @@
 		$.ajax({
 			type: "post",
 			url: "/users/login",
-			data: JSON.stringify({uid, upass}),
+			data: JSON.stringify({uid: uid, upass}),
 			contentType: "application/JSON",
 			success: function (data) {
 				if (data == 0) {
-					alert("사용가능한 아이디 입니다.");
-					check = true;
+					alert("사용가능한 아이디입니다.");
+					checked = true;
 				} else {
-					alert("이미 사용중인 아이디 입니다.");
+					alert("이미 사용중인 아이디입니다.");
 				}
 			}
-		})
+		});
 	});
 
 	$(frm.uid).on("change", function () {
-		check = false;
+		checked = false;
 	});
 
 	$("#btn-search").on("click", function () {
 		new daum.Postcode({
 			oncomplete: function (data) {
-				//console.log(data);
 				const address = data.address;
-				const building = data.buildingName ? data.buildingName : '';
-				$(frm.address1).val(`${address}(${building})`);
+				const building = data.buildingName ? `(${data.buildingName})` : '';
+				$(frm.address1).val(address + building);
 			}
 		}).open();
 	});

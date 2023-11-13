@@ -10,11 +10,12 @@ import org.springframework.stereotype.Repository;
 import com.example.domain.PostVO;
 
 @Repository
-public class PostDAOImpl implements PostDAO{
+public class PostDAOImpl implements PostDAO {
+
 	@Autowired
 	SqlSession session;
-	String namespace="com.example.mapper.PostMapper";
-	
+	String namespace = "com.example.mapper.PostMapper";
+
 	@Override
 	public List<HashMap<String, Object>> list() {
 		return session.selectList(namespace + ".list");
@@ -39,4 +40,23 @@ public class PostDAOImpl implements PostDAO{
 	public void update(PostVO vo) {
 		session.update(namespace + ".update", vo);
 	}
+
+	@Override
+	public List<HashMap<String, Object>> list1(int page, int size, String key, String query) {
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("start", (page - 1) * size);
+		map.put("size", size);
+		map.put("key", key);
+		map.put("query", query);
+		return session.selectList(namespace + ".list1", map);
+	}
+
+	@Override
+	public int total(String key, String query) {
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("key", key);
+		map.put("query", query);
+		return session.selectOne(namespace + ".total", map);
+	}
+
 }
