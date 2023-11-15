@@ -21,4 +21,6 @@ public interface ProDAO {
 	public void update(ProVO vo);
 	
 	public List<HashMap<String, Object>> slist(QueryVO vo);
+	
+	public int total(QueryVO vo);
 }

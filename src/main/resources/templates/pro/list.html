@@ -11,6 +11,7 @@
 				</select>
 				<input name="query" class="form-control ms-2" placeholder="검색어">
 				<button class="btn btn-primary">검색</button>
+				<span id="total"></span>
 			</form>
 		</div>
 		<div class="text-end col">
@@ -45,9 +46,24 @@
 	});
 
 	getList();
+	
+	function getTotal() {
+		const query = $(frm.query).val();
+		const key = $(frm.key).val();
+		$.ajax({
+			type:"get",
+			url:"/pro/total",
+			data:{query, key},
+			success:function(data) {
+				$("#total").html(`검색수: ${data}건`);
+			}
+		});
+	}
+	
 	function getList() {
 		const query = $(frm.query).val();
 		const key = $(frm.key).val();
+		getTotal();
 		$.ajax({
 			type: "get",
 			url: "/pro/slist.json",
