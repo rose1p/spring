@@ -1,44 +1,43 @@
 <div class="my-5">
-	<h1 class="text-center mb-5">교수목록</h1>
+	<h1 class="text-center mb-5">강좌목록</h1>
 	<div class="row">
-		<div class="col">
+		<div class="col-md-6">
 			<form name="frm" class="input-group">
-				<select class="form-select" name="key">
-					<option value="pcode">교수번호</option>
-					<option value="pname">교수이름</option>
-					<option value="dept">교수학과</option>
-					<option value="title">교수직책</option>
+				<select name="key" class="form-select">
+					<option value="lname">강좌이름</option>
+					<option value="lcode">강좌코드</option>
+					<option value="room">강의실</option>
+					<option value="pname">담당교수</option>
 				</select>
 				<input name="query" class="form-control ms-2" placeholder="검색어">
 				<button class="btn btn-primary">검색</button>
-				<span id="total" class="mt-2 mb-3"></span>
+				<soan id="total" class=""></soan>
 			</form>
 		</div>
-		<div class="text-end col">
-			<a href="/pro/insert" class="btn btn-primary px-5">교수등록</a>
-		</div>
 	</div>
-	<hr>
-	<div id="div_pro"></div>
+	<hr />
+	<div id="div_cou"></div>
 	<div id="pagination" class="pagination justify-content-center mt-5"></div>
 </div>
-<script id="temp_pro" type="x-handlebars-template">
+
+<script id="temp_cou" type="x-handlebars-template">
 	<table class="table">
-		{{#each .}}
+		{{#each list}}
 		<tr>
-			<td>{{pcode}}</td>
-			<td><a href="/pro/read?pcode={{pcode}}">{{pname}}</a><td>
-			<td>{{dept}}</td>
-			<td>{{title}}</td>
-			<td>{{fmtdate}}</td>
-			<td class="text-end">{{fmtsalary}}원</td>	
+			<td>{{lcode}}</td>
+			<td><a href="/cou/read?lcode={{lcode}}">{{lname}}</a><td>
+			<td>{{hours}} ({{room}})</td>
+			<td>{{pname}} ({{instructor}})</td>
+			<td class="text-end">{{persons}}/{{capacity}}</td>	
 		</tr>	
 		{{/each}}
 	</table>	
 </script>
+
 <script>
 	let page = 1;
-	const size = 3;
+	const size = 2;
+	getTotal();
 
 	$(frm).on("submit", function (e) {
 		e.preventDefault();
@@ -46,42 +45,40 @@
 		getTotal();
 	});
 
-	getTotal();
-
 	function getTotal() {
 		const query = $(frm.query).val();
 		const key = $(frm.key).val();
 		$.ajax({
 			type: "get",
-			url: "/pro/total",
-			data: {query, key},
+			url: "/cou/list.json",
+			data: {query, key, page, size},
 			success: function (data) {
-				$("#total").html(`검색수: ${data}건`);
-				if (data > size) {
+				if (data.total > size) {
 					$("#pagination").show();
-					const totalPages = Math.ceil(data / size);
+					const totalPages = Math.ceil(data.total / size);
 					$("#pagination").twbsPagination("changeTotalPages", totalPages, page)
 				} else {
 					$("#pagination").hide();
 					getList();
 				}
 			}
-		});
+		})
 	}
 
 	function getList() {
-		const query = $(frm.query).val();
 		const key = $(frm.key).val();
+		const query = $(frm.query).val();
 		$.ajax({
 			type: "get",
-			url: "/pro/slist.json",
-			data: {page, size, query, key},
+			url: "/cou/list.json",
+			data: {size, page, key, query},
 			success: function (data) {
+				$("#total").html(`검색수: ${data.total}건`);
 				if (data == 0) {
-					$("#div_pro").html("<h3 class='text-center my-5'>검색자료가 존재하지 않습니다.</h3>");
+					$("#div_stu").html("<h3 class='text-center my-5'>검색자료가 존재하지않습니다.</h3>");
 				} else {
-					const temp = Handlebars.compile($("#temp_pro").html());
-					$("#div_pro").html(temp(data));
+					const temp = Handlebars.compile($("#temp_cou").html());
+					$("#div_cou").html(temp(data));
 				}
 			}
 		});

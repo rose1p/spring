@@ -6,30 +6,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/pro")
-public class ProController {
+@RequestMapping("/stu")
+public class StuController {
 	
 	@GetMapping("/list")
 	public String list(Model model) {
-		model.addAttribute("pageName", "pro/list");
-		return "home";
-	}
-
-	@GetMapping("/insert")
-	public String insert(Model model) {
-		model.addAttribute("pageName", "pro/insert");
+		model.addAttribute("pageName", "stu/list");
 		return "home";
 	}
 	
 	@GetMapping("/read")
 	public String read(Model model) {
-		model.addAttribute("pageName", "pro/read");
+		model.addAttribute("pageName", "stu/read");
 		return "home";
 	}
 	
-	@GetMapping("/update")
-	public String update(Model model) {
-		model.addAttribute("pageName", "pro/update");
-		return "home";
-	}
 }

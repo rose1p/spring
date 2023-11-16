@@ -14,7 +14,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/posts")
-public class PostRESTController {
+public class PostRestController {
 	@Autowired
 	PostDAO dao;
 	
